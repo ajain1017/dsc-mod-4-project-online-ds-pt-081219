@@ -1,100 +1,65 @@
 
-# Module 4 -  Final Project Specifications
+# NYC Housing Data Time Series Modeling
 
-## Introduction
+## Goal
 
-In this lesson, we'll review all the guidelines and specifications for the final project for Module 4.
+In this notebook, we perform time series analysis and SARIMA modeling to predict 5 best real estate investments (by zipcode) in NYC. Our investor in mind is risk averse; therefore, they are looking to minimize error and limit conifidence interval to provide the most confident zipcode investment suggestion. We are forecasting for a 2 year and 5 year investment.
 
-## Objectives
+## Data Exploration
 
-* Understand all required aspects of the Final Project for Module 4
-* Understand all required deliverables
-* Understand what constitutes a successful project
+![2-Year ROI](/images/2-Year.png)
 
-### Final Project Summary
+![5-Year ROI](/images/5-Year.png)
 
-Another module down--you're absolutely crushing it! For this project, you'll get to flex your **_Time-Series_** muscles!
+![10-Year ROI](/images/10-Year.png)
 
-<img src='https://raw.githubusercontent.com/learn-co-curriculum/dsc-mod-4-project/master/images/timegif.gif'>
+Our 2-year investment show a big gap between Manhattan and Brooklyn and the other three as well as a difference in the direction in which their return is going. As for our 5-year investment, all boroughs end around the same percentage. Our 10-year investment shows an upward trend for SI, Queens and the Bronx, whereas once again, Manhattan and Brooklyn are decreasing.  
 
-For this module's final project, we're going to put your newfound **_Time Series Analysis_** skills to the test. You will be forecasting real estate prices of various zipcodes using data from [Zillow](https://www.zillow.com/research/data/). However, this won't be as straightforward as just running a time-series analysis--you're going to have to make some data-driven decisions and think critically along the way!
+The spike and decline due to new zipcodes in 2004 will influence our model, as well as the housing market crash; therefore, we will only work with data from 04/01/2008 till 04/01/2018, so we may have a 10-year dataset.
 
-### The Project
+## Times Series Analysis
 
-For this project, you will be acting as a consultant for a fictional real-estate investment firm. The firm has asked you what seems like a simple question:
+![Rolling Statistics](/images/rolling.png)
 
-> what are the top 5 best zipcodes for us to invest in?
+![Time Decomposition](/images/decomp.png)
 
-This may seem like a simple question at first glance, but there's more than a little ambiguity here that you'll have to think through in order to provide a solid recommendation. Should your recommendation be focused on profit margins only? What about risk? What sort of time horizon are you predicting against?  Your recommendation will need to detail your rationale and answer any sort of lingering questions like these in order to demonstrate how you define "best".
+Our rolling mean for all the zipcodes increased over time and was not stationary. Our Dickey-Fuller test confirmed this for all our zipcodes, except one, as we could not reject our null-hypothesis that the data is non-stationary. From decomposition, we see each zipcode experience an upward trend and seasonal change. As the seasonal change varies, we will use a SARIMA modeling and use auto_arima to find unique orders for each zipcode.
 
-As mentioned previously, the data you'll be working with comes from the [Zillow Research Page](https://www.zillow.com/research/data/). However, there are many options on that page, and making sure you have exactly what you need can be a bit confusing. For simplicity's sake, we have already provided the dataset for you in this repo--you will find it in the file `zillow_data.csv`.
+## SARIMAX Modeling
 
-## The Deliverables
+Instead of modeling for home value, we modeled and forecast the historical return on investment for 2-years and 5-years instead. This is because, there are way more factors that influence home value and overtime, return on investment over a period of time limit the influence of those factors.
+We keep our last forecasted value, RMSE and a variability metric for that forecast as well. Since our investor is risk averse, I wanted to make sure we choose the forecasts that are the best predicted. Therefore, by taking the quotient of size of confidence interval over highest value of in the interval, we can see the significance of the size of confidence interval given the forecasted value obtained.
 
-The goal of this project is to have you complete a very common real-world task in regard to Time-Series Modeling. However, real world problems often come with a significant degree of ambiguity, which requires you to use your knowledge of statistics and data science to think critically about and answer. While the main task in this project is Time-Series Modeling, that isn't the overall goal--it is important to understand that Time-Series Modeling is a tool in your toolbox, and the forecasts it provides you are what you'll use to answer important questions.
+Our code involved a four step process of finding number of differences and seasonal differences, finding order using those number of differences, fitting the model and then forecasting our return on investment.
 
-In short, to pass this project, demonstrating the quality and thoughtfulness of your overall recommendation is at least as important as successfully building a Time-Series model!
+## Interpreting Results
 
-Online students should complete the following 4 deliverables for this project:
+![2-Year Forecast Results](/images/finalresults1.png)
 
-* A well-documented **_Jupyter Notebook_** containing any code you've written for this project (use the notebook in this repo, `mod_4_starter_notebook.ipynb`). This work will need to be pushed to your GitHub repository in order to submit your project.
-* An organized **README.md** file in the GitHub repository that describes the contents of the repository. This file should be the source of information for navigating through the repository.
-* A **_[Blog post](https://github.com/learn-co-curriculum/dsc-welcome-blogging)_**.
-* An **_'Executive Summary' PowerPoint Presentation_** that explains your rationale and methodology for determining the best zipcodes for investment.
+![5-Year Forecast Results](/images/finalresults2.png)
 
-Note: On-campus students may have different deliverables, please speak with your instructor.
+Our 5 best zipcodes for 2-year investment are:  
+10456 - Bronx, NY  
+10305 - Richmond County, Staten Island, NY  
+10304 - Richmond County, Staten Island, NY  
+10307 - Richmond County, Staten Island, NY  
+10314 - Richmond County, Staten Island, NY  
 
-### Jupyter Notebook Must-Haves
+Our 5 best zipcodes for 5-year investment are:
+10303 - Richmond County, Staten Island, NY  
+11364 - Oakland Gardens, Queens, NY  
+11358 - Murray Hill/Flushing, Queens, NY  
+10309 - Richmond County, Staten Island, NY  
+10305 - Richmond County, Staten Island, NY  
 
-For this project, you will be provided with a jupyter notebook containing some starter code. If you inspect the zillow dataset file, you'll notice that the datetimes for each sale are the actual column names--this is a format you probably haven't seen before. To ensure that you're not blocked by preprocessing, we've provided some helper functions to help simplify getting the data into the correct format. You're not required to use this notebook or keep it in its current format, but we strongly recommend you consider making use of the helper functions so you can spend your time working on the parts of the project that matter.
+Looking at other information online, while sales dropped in the other boroughs during the second quarter of 2018, Staten Island saw an increase of 16 percent in the same period. The real estate market in Staten Island has been on the rise recently. Although the home values in Staten Island still similar to Queens, less expensive than almost all of the other boroughs. The new federal tax bill in NYC has also favored Staten Island housing, opening up opportunities for buyers. In a study by a home ownership investment firm, it is said that an individual must make around 400,000 annually to own Manhattan real estate and around 250,000 for Brooklyn owners. Therefore, as the rest of NYC moves out of the middle class, Staten Island offers attractive housing and thus makes a strong investment opportunity for 2-year and 5-year investments.
 
-#### Organization/Code Cleanliness
+As for Queens, we see many families and young adults are looking to Queens as an alternative to Manhattan and Brooklyn as it offers cheaper housing while being very well connected to the rest of NYC through public transportation. There are great schools and an ethnically-diverse community in Queens, especially in the Flushing/Murray Hill/Oakland Gardens area, being the melting pot of Queens.
 
-The notebook should be well organized, easy to follow, and code is modularized and commented where appropriate.
+The 10467 zipcode in the Bronx is right next to Yankee stadium, as well as right on the border of Manhattan. This is similar to the Queens option for most buyers as you are very connected to Manhattan while not paying the very high price as in Manhattan.
 
-* Level Up: The notebook contains well-formatted, professional looking markdown cells explaining any substantial code. All functions have docstrings that act as professional-quality documentation.
-* The notebook is written to technical audiences with a way to both understand your approach and reproduce your results. The target audience for this deliverable is other data scientists looking to validate your findings.
-* Data visualizations you create should be clearly labeled and contextualized--that is, they fit with the surrounding code or problems you're trying to solve. No dropping data visualizations randomly around your notebook without any context!
+## Future Work
 
-#### Findings
-
-Your notebook should briefly mention the metrics you have defined as "best", so that any readers understand what technical metrics you are trying to optimize for (for instance, risk vs profitability, ROI yield, etc.). You do **not** need to explain or defend your your choices in the notebook--the blog post and executive summary presentation are both better suited to that sort of content. However, the notebook should provide enough context about your definition for "best investment" so that they understand what the code you are writing is trying to solve.
-
-#### Visualizations
-
-Time-Series Analysis is an area of data science that lends itself well to intuitive data visualizations. Whereas we may not be able to visualize the best choice in a classification or clustering problem with a high-dimensional dataset, that isn't an issue with Time Series data. As such, **_any findings worth mentioning in this problem are probably also worth visualizing_**. Your notebook should make use of data visualizations as appropriate to make your findings obvious to any readers.
-
-Also, remember that if a visualization is worth creating, then it's also worth taking the extra few minutes to make sure that it is easily understandable and well-formatted. When creating visualizations, make sure that they have:
-
-* A title
-* Clearly labeled X and Y axes, with appropriate scale for each
-* A legend, when necessary
-* No overlapping text that makes it hard to read
-* An intelligent use of color--multiple lines should have different colors and/or symbols to make them easily differentiable to the eye
-* An appropriate amount of information--avoid creating graphs that are "too busy"--for instance, don't create a line graph with 25 different lines on it
-
-<center><img src='images/bad-graph-1.png' height=100% width=100%>
-There's just too much going on in this graph for it to be readable--don't make the same mistake! (<a href='http://genywealth.com/wp-content/uploads/2010/03/line-graph.php_.png'>Source</a>)</center>
-
-### Blog Post Must-Haves
-
-Refer back to the [Blogging Guidelines](https://github.com/learn-co-curriculum/dsc-welcome-blogging) for the technical requirements and blog ideas.
-
-
-### Executive Summary Must-Haves
-
-Your presentation should:
-
-Contain between 5-10 professional quality slides detailing:
-
-* A high-level overview of your methodology and findings, including the 5 zipcodes you recommend investing in
-* A brief explanation of what metrics you defined as "best" in order complete this project
-
-As always, this prresentation should also:
-
-* Take no more than 5 minutes to present
-* Avoid technical jargon and explain results in a clear, actionable way for non-technical audiences.
-
-## Grading Rubric 
-
-Online students can find a PDF of the grading rubric for the project [here](https://github.com/learn-co-curriculum/dsc-mod-4-project/blob/master/module4_project_rubric.pdf). _Note: On-campus students may have different requirements, please speak with your instructor._
+− Keep in mind, our forecasts were solely based on past monthly home values. I would look to add more features to better predict housing prices in the future
+− I would look to improve the model by understanding better the trends and seasonality of each zip code. Therefore, a better understanding of the differencing levels for our model
+- I would explore other time series models such as Facebook Prophet, or Vector Autoregression Moving-Average with Exogenous Regressors model
