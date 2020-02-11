@@ -60,6 +60,6 @@ The 10467 zipcode in the Bronx is right next to Yankee stadium, as well as right
 
 ## Future Work
 
-− Keep in mind, our forecasts were solely based on past monthly home values. I would look to add more features to better predict housing prices in the future
-− I would look to improve the model by understanding better the trends and seasonality of each zip code. Therefore, a better understanding of the differencing levels for our model
-- I would explore other time series models such as Facebook Prophet, or Vector Autoregression Moving-Average with Exogenous Regressors model
+− Keep in mind, our forecasts were solely based on past monthly home values. I would look to add more features to better predict housing prices in the future  
+− I would look to improve the model by understanding better the trends and seasonality of each zip code. Therefore, a better understanding of the differencing levels for our model  
+− I would explore other time series models such as Facebook Prophet, or Vector Autoregression Moving-Average with Exogenous Regressors model
