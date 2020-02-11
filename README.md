@@ -7,11 +7,11 @@ In this notebook, we perform time series analysis and SARIMA modeling to predict
 
 ## Data Exploration
 
-![2-Year ROI](/images/twoYear.png)
+![2-Year ROI](/images/twoyear.png)
 
-![5-Year ROI](/images/fiveYear.png)
+![5-Year ROI](/images/fiveyear.png)
 
-![10-Year ROI](/images/tenYear.png)
+![10-Year ROI](/images/tenyear.png)
 
 Our 2-year investment show a big gap between Manhattan and Brooklyn and the other three as well as a difference in the direction in which their return is going. As for our 5-year investment, all boroughs end around the same percentage. Our 10-year investment shows an upward trend for SI, Queens and the Bronx, whereas once again, Manhattan and Brooklyn are decreasing.  
 
