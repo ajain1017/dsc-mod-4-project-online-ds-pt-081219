@@ -1,6 +1,8 @@
 
 # NYC Housing Data Time Series Modeling
 
+(technical presentation can be found in index.ipynb file)
+
 ## Goal
 
 In this notebook, we perform time series analysis and SARIMA modeling to predict 5 best real estate investments (by zipcode) in NYC. Our investor in mind is risk averse; therefore, they are looking to minimize error and limit conifidence interval to provide the most confident zipcode investment suggestion. We are forecasting for a 2 year and 5 year investment.
